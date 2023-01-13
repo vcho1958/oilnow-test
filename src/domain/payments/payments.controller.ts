@@ -21,9 +21,7 @@ export class PaymentsController {
   public async transferPayment(
     @Body() paymentCreateDto: PaymentCreateRequsetDto,
   ): Promise<PaymentCreateResponseDto> {
-    // this.logger.debug(paymentCreateDto);
     this.validatePaymentCreateDto(paymentCreateDto);
-    //   const cacheKey = JSON.stringify(paymentCreateDto);
     const cacheKey = `${paymentCreateDto.id} ${paymentCreateDto.amount}`;
     const cachedData = await this.cache.get(cacheKey);
     this.logCached(cachedData);
