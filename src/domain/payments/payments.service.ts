@@ -29,11 +29,12 @@ export class PaymentsService {
     //await this.cache.set(cacheKey+'semaphore', 1);
     await this.trasferPaymentToExternal(paymentCreateDto);
     this.paymentsRepository.createPayment(paymentCreateDto);
-    //await this.cache.del(cacheKey+'semaphore');
+    
     const response: PaymentCreateResponseDto = {
       message: 'The request is successful',
     };
     await this.cache.set(cacheKey, response, 5000);
+    //await this.cache.del(cacheKey+'semaphore');
     return response;
   }
 
