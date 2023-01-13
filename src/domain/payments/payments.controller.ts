@@ -30,6 +30,8 @@ export class PaymentsController {
   }
 
   private validatePaymentCreateDto(paymentCreateDto: PaymentCreateRequsetDto) {
+    //네스트 기본 밸리데이션 파이프가 class-validator 기반으로 동작하는데 속도 저하가 생기기 때문에 인터페이스로만 받고 별도의 함수로 만들었습니다.
+    //그렇다 하더라도 커스텀 파이프를 만들면 됐을텐데 아쉽네요.
     const { id, amount } = paymentCreateDto;
     if (isUndefined(id, amount)) throw new PaymentFailureException();
     if (!checkIdLength(id)) throw new PaymentFailureException();
