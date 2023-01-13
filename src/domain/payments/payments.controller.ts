@@ -22,7 +22,8 @@ export class PaymentsController {
     @Body() paymentCreateDto: PaymentCreateRequsetDto,
   ): Promise<PaymentCreateResponseDto> {
     this.validatePaymentCreateDto(paymentCreateDto);
-    const cacheKey = `${paymentCreateDto.id} ${paymentCreateDto.amount}`;
+    const cacheKey = `${paymentCreateDto.id} ${paymentCreateDto.amount}`; 
+      //이유 JSON.stringfy는 느리다고 알고있어서 이렇게 만들었습니다. 서비스단 함수이름도 식별자에 포함했으면 좋았을 것 같네요
     const cachedData = await this.cache.get(cacheKey);
     this.logCached(cachedData);
     if (cachedData) throw new DuplicateRequestException();
