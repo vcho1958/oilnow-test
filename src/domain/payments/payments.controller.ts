@@ -23,10 +23,11 @@ export class PaymentsController {
   ): Promise<PaymentCreateResponseDto> {
     this.validatePaymentCreateDto(paymentCreateDto);
     const cacheKey = `${paymentCreateDto.id} ${paymentCreateDto.amount}`; 
-      //이유 JSON.stringfy는 느리다고 알고있어서 이렇게 만들었습니다. 서비스단 함수이름도 식별자에 포함했으면 좋았을 것 같네요
-    const cachedData = await this.cache.get(cacheKey);
-    this.logCached(cachedData);
-    if (cachedData) throw new DuplicateRequestException();
+    //이유 JSON.stringfy는 느리다고 알고있어서 이렇게 만들었습니다. 서비스단 함수이름도 키\에 포함했으면 좋았을 것 같네요
+    if(await this.cache.get(cacheKey))throw new DuplicateRequestException();
+    //오답노트 if(await this.cache.get(cacheKey+'semaphore'))throw new DuplicateRequestException();
+    //await this.cache.set(cacheKey+'semaphore', 1, 5000); 
+    //결과 캐싱 이외에 뮤택스 역할을 하는 것도 추가를 했어야했습니다.
     return await this.paymentsService.transferPayment(paymentCreateDto);
   }
 
