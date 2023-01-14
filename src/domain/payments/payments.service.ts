@@ -25,8 +25,6 @@ export class PaymentsService {
     paymentCreateDto: PaymentCreateRequsetDto,
   ): Promise<PaymentCreateResponseDto> {
     const cacheKey = `${paymentCreateDto.id} ${paymentCreateDto.amount}`;
-    //오답노트 if(await this.cache.get(cacheKey+'semaphore'))throw new DuplicateRequestException();
-    //await this.cache.set(cacheKey+'semaphore', 1);
     await this.trasferPaymentToExternal(paymentCreateDto);
     this.paymentsRepository.createPayment(paymentCreateDto);
     
@@ -34,7 +32,7 @@ export class PaymentsService {
       message: 'The request is successful',
     };
     await this.cache.set(cacheKey, response, 5000);
-    //await this.cache.del(cacheKey+'semaphore');
+    //await this.cache.set(cacheKey+'semaphore', 0);
     return response;
   }
 
